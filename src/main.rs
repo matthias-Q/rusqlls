@@ -1,6 +1,9 @@
+use chumsky::Parser;
+use rusqlls::parser::parser;
 use tower_lsp::jsonrpc::Result;
 use tower_lsp::lsp_types::*;
 use tower_lsp::{Client, LanguageServer, LspService, Server};
+
 
 #[derive(Debug)]
 struct Backend {
@@ -26,9 +29,13 @@ impl LanguageServer for Backend {
 
 #[tokio::main]
 async fn main() {
-    let stdin = tokio::io::stdin();
-    let stdout = tokio::io::stdout();
+    // let stdin = tokio::io::stdin();
+    // let stdout = tokio::io::stdout();
+    //
+    // let (service, socket) = LspService::new(|client| Backend { client });
+    // Server::new(stdin, stdout, socket).serve(service).await;
 
-    let (service, socket) = LspService::new(|client| Backend { client });
-    Server::new(stdin, stdout, socket).serve(service).await;
+    let data = include_str!("test.sql");
+
+    println!("{:?}",parser().parse(data));
 }
